@@ -9,39 +9,86 @@ let idProduct = 0
 router.get('/', (req, res) => {
     const { limit } = req.query
 
-    res.json({ message: 'products'})
+    if (products.length > 0) {
+        res.json({ message: products })
+    } else {
+        res.status(401).json({ message: 'Products not found' })
+    }
 })
 
 router.get('/:id', (req, res) => {
-    res.json({ message: `product ${req.params.id}`})
+    try {
+        const productId = parseInt(req.params.id);
+        const product = products.find(product => product.id === productId)
+
+        if (product) {
+            res.json(product)
+        } else {
+            res.status(404).json({ error: 'Product not found' })
+        }
+    } catch (error) {
+        res.status(404).json({ error: 'Product not found' })
+    }
 })
 
 router.post('/', uploader.single('thumbnails'), (req, res) => {
-    const { title, description, code, price, stock, category } = req.body
-    const file = req.file
-    const status = req.body.status === 'true'
-    const thumbnails = req.file.path
+    try {    
+        const { title, description, code, price, stock, category } = req.body
+        
+        if (!title || !description || !code || !price || !stock || !category) {
+            return res.status(400).json({ error: 'Missing required parameters' });
+        }
 
-    idProduct++
-    const product = { id: idProduct, title, description, code, price, stock, category, file, thumbnails }
+        const file = req.file
+        const status = req.body.status === 'true'
+        const thumbnails = req.file ? req.file.path : ''
 
-    products.push(product)
 
-    console.log("Datos del producto:", {
-        title, description, code, price, status, stock, category, thumbnails
-    })
-    console.log(products)
+        idProduct++
+        const product = { id: idProduct, title, description, code, price, stock, category, file, thumbnails }
 
-    res.json({ message: `create product` })
+        products.push(product)
+
+        console.log("Datos del producto:", {
+            title, description, code, price, status, stock, category, thumbnails
+        })
+        console.log(products)
+
+        res.json({ message: `create product` })
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
 })
 
-router.put('/:id', (req, res) => {
-    const { title, description, code, price, status, stock, category, thumbnails } = req.query
-    res.json({ message: 'update product'})
+router.post('/:id', (req, res) => {
+    const productId = parseInt(req.body.productId);
+    const product = products.find(product => product.id === productId)
+
+    if(product) {
+        product.title = req.body.title,
+        product.description = req.body.description,
+        product.code = req.body.code,
+        product.price = req.body.price,
+        product.stock = req.body.stock,
+        product.category = req.body.category,
+        product.file = req.body.file,
+        product.thumbnails = req.body.thumbnails
+        res.json({ message: 'updated product'})
+    } else {
+        res.status(404).json({ error: 'Product not found' })
+    }
 })
 
 router.delete('/:id', (req, res) => {
-    res.json({ message: `delete product ${req.params.id}`})
+    const productId = parseInt(req.req.params)
+    const productIndex = products.findIndex(product => product.id === productId)
+
+    if (productIndex !== -1) {
+        products.splice(productIndex, 1)
+        res.json({ message: 'Product deleted' })
+    } else {
+        res.status(404).json({ error: 'Product not found' })
+    }
 })
 
 module.exports = { products, router }
