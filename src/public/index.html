@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coder Backend</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1>PROYECTO FINAL</h1>
+    <main>
+        <h1>Crear productos</h1>
+        <form action="products" method="post" enctype="multipart/form-data">
+            <label for="">Titulo</label>
+            <input type="text" name="title">
+
+            <label for="">Descripcion</label>
+            <input type="text" name="description">
+
+            <label for="">Codigo</label>
+            <input type="text" name="code">
+
+            <label for="">Precio</label>
+            <input type="number" name="price">
+
+            <label for="">Estado</label>
+            <input type="checkbox" name="status" value="true">
+
+            <label for="">Stock</label>
+            <input type="number" name="stock">
+
+            <label for="">Categoria</label>
+            <input type="text" name="category">
+
+            <label for="file">Archivo</label>
+            <input type="file" name="thumbnails">
+
+            <input type="submit">
+        </form>
+        <h1>Agregar productos al carrito</h1>
+        <form action="/carts" method="post">
+            <label for="productId">ID del Producto:</label>
+            <input type="number" name="productId" id="productId">
+            <input type="submit" value="Agregar al Carrito">
+        </form>
+    </main>
+</body>
+</html>
