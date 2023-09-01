@@ -1,0 +1,81 @@
+<h1>ECOMMERCE PROYECTO FINAL</h1>
+<main>
+    <h1>Crear productos</h1>
+    <form id="form-create" action="products" method="post" enctype="multipart/form-data">
+        <label for="">Titulo</label>
+        <input type="text" name="title" required>
+
+        <label for="">Descripcion</label>
+        <input type="text" name="description" required>
+
+        <label for="">Codigo</label>
+        <input type="text" name="code" required>
+
+        <label for="">Precio</label>
+        <input type="number" name="price" required>
+
+        <label for="">Estado</label>
+        <input type="checkbox" name="status" value="true">
+
+        <label for="">Stock</label>
+        <input type="number" name="stock" required>
+
+        <label for="">Categoria</label>
+        <input type="text" name="category" required>
+
+        <label for="file">Archivo</label>
+        <input type="file" name="thumbnails">
+
+        <input type="submit">
+    </form>
+    <h1>Agregar productos al carrito</h1>
+    <form action="/carts" method="post">
+        <label for="productId">ID del Producto:</label>
+        <input type="number" name="productId" id="productId">
+        <input type="submit" value="Agregar al Carrito">
+    </form>
+    <h1>Actualizar productos</h1>
+    <form action="/products/:id" method="post">
+
+        <label for="productId">ID del Producto a Modificar:</label>
+        <input type="number" name="productId" id="productId" required>
+
+        <label for="">Titulo</label>
+        <input type="text" name="title">
+
+        <label for="">Descripcion</label>
+        <input type="text" name="description">
+
+        <label for="">Codigo</label>
+        <input type="text" name="code">
+
+        <label for="">Precio</label>
+        <input type="number" name="price">
+
+        <label for="">Estado</label>
+        <input type="checkbox" name="status" value="true">
+
+        <label for="">Stock</label>
+        <input type="number" name="stock">
+
+        <label for="">Categoria</label>
+        <input type="text" name="category">
+
+        <label for="file">Archivo</label>
+        <input type="file" name="thumbnails">
+
+        <input type="hidden" name="_method" value="PUT">
+        <input type="submit" value="Actualizar">
+    </form>
+    <h1>Eliminar productos</h1>
+    <form action="/products/:id" method="post">
+
+        <label for="productId">ID del Producto:</label>
+        <input type="number" name="productId" id="productId">
+
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="Eliminar">
+    </form>
+</main>
+<p id="response"></p>
+<script src="js/script.js"></script>

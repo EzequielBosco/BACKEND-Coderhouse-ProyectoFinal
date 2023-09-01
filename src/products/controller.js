@@ -1,5 +1,8 @@
 const { Router } = require('express')
 const uploader = require('../utils/multer')
+const ProductsDao = require('../DAOs/productsMongo.dao')
+
+const Products = new ProductsDao()
 
 const router = Router()
 
@@ -7,13 +10,19 @@ const products = []
 let idProduct = 0
 
 router.get('/', (req, res) => {
-    const { limit } = req.query
+    res.render('index')
+})
 
-    if (products.length > 0) {
-        res.json({ message: products })
-    } else {
-        res.status(401).json({ message: 'Products not found' })
-    }
+router.get('/create', async (req, res) => {
+    // const { limit } = req.query
+    const products = await Products.findAll()
+    res.json({ message: products })
+
+    // if (products.length > 0) {
+    //     res.json({ message: products })
+    // } else {
+    //     res.status(401).json({ message: 'Products not found' })
+    // }
 })
 
 router.get('/:id', (req, res) => {
@@ -31,7 +40,7 @@ router.get('/:id', (req, res) => {
     }
 })
 
-router.post('/', uploader.single('thumbnails'), (req, res) => {
+router.post('/', uploader.single('thumbnails'), async (req, res) => {
     try {    
         const { title, description, code, price, stock, category } = req.body
         
@@ -43,18 +52,28 @@ router.post('/', uploader.single('thumbnails'), (req, res) => {
         const status = req.body.status === 'true'
         const thumbnails = req.file ? req.file.path : ''
 
-
+        
         idProduct++
         const product = { id: idProduct, title, description, code, price, stock, category, file, thumbnails }
 
-        products.push(product)
+        const newProduct = {
+            title: title,
+            description: description,
+            code: code,
+            price: price,
+            stock: stock,
+            category: category
+        }
+        
+        await Products.insertOne(newProduct)
 
-        console.log("Datos del producto:", {
+        products.push(product)
+        
+        console.log("Data product:", {
             title, description, code, price, status, stock, category, thumbnails
         })
-        console.log(products)
 
-        res.json({ message: `create product` })
+        res.json({ message: newProduct._id })
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

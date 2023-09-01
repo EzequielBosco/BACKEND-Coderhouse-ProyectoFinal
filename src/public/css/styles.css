@@ -2,3 +2,19 @@ body {
     background-color: black;
     color: white;
 }
+
+form {
+    background-color: rgb(66, 66, 66);
+    margin: 20px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 5px;
+    max-width: 50%;
+}
+
+form input {
+    width: 80%;
+}

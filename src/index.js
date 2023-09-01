@@ -1,17 +1,14 @@
-const express = require('express')
-const router = require('./routes')
-const methodOverride = require('method-override')
+require('dotenv').config()
+const realTimeServer = require('./realTimeServer')
+const app = require('./app')
+const router = require('./router')
 
-const app = express()
-const port = 8080
-
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static(__dirname + '/public'))
-app.use(methodOverride('_method'))
+const port = process.env.port || 8080
 
 router(app)
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 })
+
+realTimeServer(httpServer)
