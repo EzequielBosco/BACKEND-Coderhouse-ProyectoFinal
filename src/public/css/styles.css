@@ -15,6 +15,27 @@ form {
     max-width: 50%;
 }
 
+.title {
+    display: flex;
+    justify-content: center;
+}
+
+.sub-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
 form input {
-    width: 80%;
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 0.5px solid rgb(204, 204, 204);
+    border-radius: 10px;
+    width: 95%;
+}
+
+.chat {
+    margin: 40px;
 }

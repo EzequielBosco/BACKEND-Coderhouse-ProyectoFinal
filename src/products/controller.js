@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
     res.render('index')
 })
 
-router.get('/create', async (req, res) => {
+router.get('/list', async (req, res) => {
     // const { limit } = req.query
     const products = await Products.findAll()
     res.json({ message: products })

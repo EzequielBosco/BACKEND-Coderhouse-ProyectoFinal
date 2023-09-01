@@ -7,7 +7,7 @@ const port = process.env.port || 8080
 
 router(app)
 
-app.listen(port, () => {
+const httpServer = app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 })
 
