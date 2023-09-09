@@ -1,4 +1,5 @@
 const {Server} = require('socket.io')
+const Message = require('./models/messages.model')
 
 const messages = []
 const userColors = {}
@@ -23,10 +24,22 @@ const realTimeServer = httpServer => {
             socket.broadcast.emit('newUser', user)
         })
 
-        socket.on('message', data => {
-            messages.push(data)
+        socket.on('message', async data => {
 
-            io.emit('messageLogs', messages)        
+            const newMessage = {
+                user: data.user,
+                message: data.message,
+                date: new Date(),
+            }
+
+            try {
+                await Message.create(newMessage)
+
+                messages.push(data);
+                io.emit('messageLogs', messages);
+            } catch (error) {
+                console.error('Error al guardar el mensaje en la base de datos:', error);
+            }       
         })
     })
 }

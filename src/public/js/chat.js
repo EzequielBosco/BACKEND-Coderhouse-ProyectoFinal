@@ -3,6 +3,7 @@ socket = io()
 const chatBox = document.getElementById('chat-box')
 
 const userColors = {}
+let user
 
 function generateRandomColor() {
     return '#' + Math.floor(Math.random()*16777215).toString(16)
@@ -20,14 +21,15 @@ const chat = async (chatBox) => {
         allowOutsideClick: false
     })
     
-    const user = swal.value
+    user = swal.value
 
     socket.emit('auth', user)
 
     chatBox.addEventListener('keyup', e => {
         if(e.key === 'Enter') {
             if (chatBox.value.trim().length > 0) {
-                socket.emit('message', {user, message: chatBox.value})
+                const message = chatBox.value
+                socket.emit('message', {user, message})
                 chatBox.value = ''
             }
         }

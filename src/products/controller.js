@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const uploader = require('../utils/multer')
 const ProductsDao = require('../DAOs/productsMongo.dao')
+const ProductsModel = require("../models/product.model")
 
 const Products = new ProductsDao()
 
@@ -25,18 +26,32 @@ router.get('/list', async (req, res) => {
     // }
 })
 
-router.get('/:id', (req, res) => {
-    try {
-        const productId = parseInt(req.params.id);
-        const product = products.find(product => product.id === productId)
+// router.get('/:id', (req, res) => {
+//     try {
+//         const productId = parseInt(req.params.id);
+//         const product = products.find(product => product.id === productId)
 
-        if (product) {
-            res.json(product)
-        } else {
-            res.status(404).json({ error: 'Product not found' })
-        }
+//         if (product) {
+//             res.json(product)
+//         } else {
+//             res.status(404).json({ error: 'Product not found' })
+//         }
+//     } catch (error) {
+//         res.status(404).json({ error: 'Product not found' })
+//     }
+// })
+
+router.get('/paginate', async (req, res) => {
+    try {
+
+        const { limit, page } = req.query
+        const payload = await ProductsModel.paginate(
+            {},
+            { limit: Number(limit), page: Number(page) }
+        )
+        res.json({ status: 'success', payload })
     } catch (error) {
-        res.status(404).json({ error: 'Product not found' })
+        res.json({ status: 'error' })
     }
 })
 
