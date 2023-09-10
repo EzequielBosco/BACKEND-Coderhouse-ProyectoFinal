@@ -39,3 +39,11 @@ form input {
 .chat {
     margin: 40px;
 }
+
+div {
+    background-color: rgb(78, 78, 78);
+}
+
+.products {
+    color: white;
+}

@@ -10,7 +10,36 @@ const router = Router()
 const products = []
 let idProduct = 0
 
-router.get('/', (req, res) => {
+// SIN PAGINATE
+// router.get('/', async (req, res) => {
+//     try {
+//         const products = await Products.findAll()
+//         res.render('products', { products })
+//     } catch (error) {
+//         res.json({ status:'error', error })
+//     }
+// })
+
+router.get('/', async (req, res) => {
+    try {
+        const { limit = 10, page = 1 } = req.query
+
+        const options = {
+            lean: true,
+            limit: parseInt(limit),
+            page: parseInt(page)
+        }
+        const products = await ProductsModel.paginate(
+            {}, options
+        )
+
+        res.render('products', { products: products.docs })
+    } catch (error) {
+        res.json({ status:'error', error })
+    }
+})
+
+router.get('/create', (req, res) => {
     res.render('index')
 })
 

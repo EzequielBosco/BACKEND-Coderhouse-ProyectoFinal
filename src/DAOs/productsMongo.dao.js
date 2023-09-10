@@ -1,8 +1,8 @@
-const Products = require("../models/product.model");
+const Products = require("../models/product.model")
 
 class ProductsDao {
     async findAll() {
-        return await Products.find()
+        return await Products.find().lean()
     }
 
     async insertOne(newProductInfo) {
