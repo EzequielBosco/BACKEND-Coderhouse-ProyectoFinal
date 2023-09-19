@@ -3,6 +3,7 @@ const cartsController = require('../carts/controller')
 // const usersController = require('../users/controller')
 const messagesController = require('../messages/controller')
 const cookiesController = require('../cookies/controller')
+const sessionController = require('../session/controller')
 
 const router = app => {
     app.use('/products', productsController.router)
@@ -10,6 +11,7 @@ const router = app => {
     // app.use ('/users', usersController)
     app.use('/messages', messagesController)
     app.use('/cookies', cookiesController)
+    app.use('/session', sessionController)
 }
 
 module.exports = router
