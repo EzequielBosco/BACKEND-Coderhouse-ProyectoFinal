@@ -84,7 +84,7 @@ router.get('/paginate', async (req, res) => {
     }
 })
 
-router.post('/', uploader.single('thumbnails'), async (req, res) => {
+router.post('/create', uploader.single('thumbnails'), async (req, res) => {
     try {    
         const { title, description, code, price, stock, category } = req.body
         
@@ -117,7 +117,7 @@ router.post('/', uploader.single('thumbnails'), async (req, res) => {
             title, description, code, price, status, stock, category, thumbnails
         })
 
-        res.json({ message: newProduct._id })
+        res.json({ message: 'Product created successfully', data: newProduct })
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

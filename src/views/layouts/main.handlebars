@@ -4,9 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ecommerce</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;400;500&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header>
+        <nav>
+            <div class="nav-left-top">
+                <a href="/">
+                    <img id="logo" src="/img/logo.png">
+                </a>
+            </div>
+            <div class="nav-center-top">
+                <form class="nav-search" action="/products">
+                    <input type="text" id="search" placeholder="Busca productos, marcas y más...">
+                    <button class="btn-search" type="submit">
+                        Buscar
+                    </button>
+                </form>
+            </div>
+            <div class="nav-right-top">
+                <a href="">
+                    <img id="img-public" src="https://http2.mlstatic.com/D_NQ_957153-MLA69318147677_052023-OO.webp" alt="Publicidad suscripcion">
+                </a>
+            </div>
+            <div class="nav-left-bottom">
+                <div class="div-nav-location">
+                    <img src="/img/location.png">
+                    <div>
+                        <p>Enviar a</p>
+                        <p><strong>Capital Federal</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-center-bottom">
+                <ul>
+                    <li>Categorías</li>
+                    <li>Ofertas</li>
+                    <li>Historial</li>
+                    <li>Supermercado</li>
+                    <li>Moda</li>
+                    <li>Vender</li>
+                    <li>Ayuda</li>
+                </ul>
+            </div>
+            <div class="nav-right-bottom">
+                <ul>
+                    <li><a href="/session/register">Creá tu cuenta</a></li>
+                    <li><a href="/session/login">Ingresá</a></li>
+                    <li>Mis compras</li>
+                    <li>
+                        <a href="/carts">
+                            <img src="/img/carrito.png">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
     {{{ body }}}
 </body>
 </html>

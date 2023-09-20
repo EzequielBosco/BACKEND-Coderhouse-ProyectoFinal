@@ -4,10 +4,21 @@ const Users = require('../models/users.model')
 const router = Router()
 
 router.get('/register', (req, res) => {
+    if (req.session.user && req.session.admin) {
+        const userId = req.session.user._id
+        const profileUrl = `/session/profile/${userId}`
+
+        return res.redirect(profileUrl)
+    }
+
     res.render('register')
 })
 
 router.post('/register', async (req, res) => {
+    if (req.session.user && req.session.admin) {
+        return res.send('You are already logged in')
+    }
+
     try {
         const { first_name, last_name, email, age, password } = req.body
     
@@ -28,10 +39,21 @@ router.post('/register', async (req, res) => {
 })
 
 router.get('/login', (req, res) => {
+    if (req.session.user && req.session.admin) {
+        const userId = req.session.user._id
+        const profileUrl = `/session/profile/${userId}`
+
+        return res.redirect(profileUrl)
+    }
+
     res.render('login')
 })
 
 router.post('/login', async (req, res) => {
+    if (req.session.user && req.session.admin) {
+        return res.send('You are already logged in')
+    }
+
     try {    
         const { email, password } = req.body
     
@@ -65,7 +87,7 @@ router.get('/', (req, res) => {
     }
 })
 
-async function auth(req, res, next) {
+function auth(req, res, next) {
     try {
         if (req.session.user && req.session.admin) {
             return next()
@@ -91,8 +113,19 @@ router.get('/logout', (req, res) => {
     })
 })
 
-router.get('/profile', (req, res) => {
-    res.render('profile')
+router.get('/profile/:id', auth, async (req, res) => {
+    try {
+        const { id } = req.params
+        const user = await Users.findOne({ _id: id })
+
+        if (!user) {
+            return res.send('User profile not find')
+        }
+
+        res.render('profile', { user: user })
+    } catch (error) {
+        res.status(500).json({ error: 'User profile error' })
+    }
 })
 
 module.exports = router

@@ -1,7 +1,7 @@
 <h1>ECOMMERCE PROYECTO FINAL</h1>
 <main>
     <h1>Crear productos</h1>
-    <form id="form-create" action="products" method="post" enctype="multipart/form-data">
+    <form class="forms" id="form-create" action="/products/create" method="post" enctype="multipart/form-data">
         <label for="">Titulo</label>
         <input type="text" name="title" required>
 
@@ -29,13 +29,13 @@
         <input type="submit">
     </form>
     <h1>Agregar productos al carrito</h1>
-    <form action="/carts" method="post">
+    <form class="forms" action="/carts" method="post">
         <label for="productId">ID del Producto:</label>
         <input type="number" name="productId" id="productId">
         <input type="submit" value="Agregar al Carrito">
     </form>
     <h1>Actualizar productos</h1>
-    <form action="/products/:id" method="post">
+    <form class="forms" action="/products/:id" method="post">
 
         <label for="productId">ID del Producto a Modificar:</label>
         <input type="number" name="productId" id="productId" required>
@@ -68,7 +68,7 @@
         <input type="submit" value="Actualizar">
     </form>
     <h1>Eliminar productos</h1>
-    <form action="/products/:id" method="post">
+    <form class="forms" action="/products/:id" method="post">
 
         <label for="productId">ID del Producto:</label>
         <input type="number" name="productId" id="productId">

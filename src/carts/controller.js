@@ -1,4 +1,4 @@
-const { Router } = require('express');
+const { Router } = require('express')
 const router = Router()
 
 const { products } = require('../products/controller')
@@ -12,7 +12,7 @@ router.post('/', (req, res) => {
 
     if (!productCart) {
         if (productToAdd) {
-            const newCart = { id: productId, products: [{ id: productId, quantity: parseInt(productToAdd.stock)}] }
+            const newCart = { id: productId, products: [{ id: productId, quantity: 1 }] }
             carts.push(newCart)
 
             res.json({ message: 'Product added to cart' })
@@ -22,10 +22,10 @@ router.post('/', (req, res) => {
     } else {
         const productInCart = productCart.products.find(p => p.id === productId)
         if (productInCart) {
-            productInCart.quantity += parseInt(productToAdd.stock)
+            productInCart.quantity += 1
             res.json({ message: 'Product added to cart', cart: productCart })
         } else {
-            productCart.products.push({ id: productId, quantity: parseInt(productToAdd.stock) })
+            productCart.products.push({ id: productId, quantity: 1 })
         }
         res.json({ message: 'Product added to cart', cart: productCart })
     }
@@ -34,11 +34,11 @@ router.post('/', (req, res) => {
 router.get('/', (req, res) => {
 
     if (carts.length > 0) { 
-        res.json({ cart: carts })
+        res.render('carts', { carts })
+        // res.json({ cart: carts })
     } else {
         res.status(404).json({ message: 'Cart is empty' })
     }
-
 })
 
 module.exports = router

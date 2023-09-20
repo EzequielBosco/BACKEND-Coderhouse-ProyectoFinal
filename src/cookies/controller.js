@@ -10,6 +10,7 @@ router.get('/', (req, res) => {
     }
 })
 
+// ingresar cookie
 // router.get('/set', (req, res) => {
 //     res.cookie('cookieClave', 'cookieValor',{signed:true}).send('cookie firmada enviada')
 // })
@@ -32,12 +33,12 @@ router.get('/deleteCookie', (req, res) => {
     res.clearCookie("cookieClave").send('cookie eliminada')
 })
 
-router.get('/logout', (req, res) => {
+router.get('/deleteAllCookies', (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            res.send({ status: 'Logout ERROR', body: err })
+            res.send({ status: 'Delete ERROR', body: err })
         } else {
-            res.send('Logout ok!')
+            res.send('Cookies deleted')
         }
     })
 })
