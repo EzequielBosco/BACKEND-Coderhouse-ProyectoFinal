@@ -12,7 +12,12 @@ function login(e) {
         body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
     })
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => {
+        console.log(data)
+        if (data.message === 'Login successful' && data.redirect) {
+            window.location.href = data.redirect
+        }
+    })
     .catch(err => console.log(err))
 }
 

@@ -32,7 +32,9 @@ router.post('/register', async (req, res) => {
 
         const newUser = await Users.create(data)
 
-        res.json({ message: 'successful register', data: newUser })
+        const redirectLogin = "/session/login"
+
+        return res.status(200).json({ message: 'Successful register', data: newUser, redirect: redirectLogin })
     } catch (error) {
         res.status(500).json({ error: 'Register error' })
     }
@@ -51,7 +53,7 @@ router.get('/login', (req, res) => {
 
 router.post('/login', async (req, res) => {
     if (req.session.user && req.session.admin) {
-        return res.send('You are already logged in')
+        return res.status(400).json({ error: 'You are already logged in' })
     }
 
     try {    
@@ -68,9 +70,19 @@ router.post('/login', async (req, res) => {
             req.session.user = user
             req.session.admin = true
 
-            return res.json({ message: 'successful login' })
+            if (req.session.returnTo) {
+                // user a la URL 'returnTo'
+                const returnTo = req.session.returnTo
+                delete req.session.returnTo
+                return res.status(200).json({ message: 'Login successful', redirect: returnTo });
+            } else {
+                // user al perfil
+                const userId = req.session.user._id
+                const profileUrl = `/session/profile/${userId}`
+                return res.status(200).json({ message: 'Login successful', redirect: profileUrl })
+            }
         } else {
-            return res.send('Password not match')
+            return res.status(401).json({ error: 'Password does not match' })
         }
     } catch (error) {
         res.status(500).json({ error: 'Login error' })
@@ -92,7 +104,7 @@ function auth(req, res, next) {
         if (req.session.user && req.session.admin) {
             return next()
         } else {
-            return res.status(401).send('You don´t have access')
+            return res.redirect('/session/login')
         }
     } catch (error) {
         return res.status(401).send('Auth error')
@@ -108,7 +120,8 @@ router.get('/logout', (req, res) => {
         if (err) {
             res.send({ status: 'Logout ERROR', body: err })
         } else {
-            res.send('Logout ok!')
+            // res.send('Logout ok!')
+            res.redirect("/")
         }
     })
 })

@@ -15,7 +15,12 @@ function register(e) {
         body: JSON.stringify(obj)
     })
     .then(response => response.json())
-    .then(data => console.log(data))
+    .then(data => {
+        console.log(data)
+        if (data.message === 'Successful register' && data.redirect) {
+            window.location.href = data.redirect
+        }
+    })
     .catch(err => console.log(err))
 }
 

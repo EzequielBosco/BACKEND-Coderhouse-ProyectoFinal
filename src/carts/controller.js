@@ -33,11 +33,16 @@ router.post('/', (req, res) => {
 
 router.get('/', (req, res) => {
 
-    if (carts.length > 0) { 
-        res.render('carts', { carts })
-        // res.json({ cart: carts })
+    if (req.session.user && req.session.admin) {
+        if (carts.length > 0) { 
+            res.render('carts', { carts })
+            // res.json({ cart: carts })
+        } else {
+            res.status(404).json({ message: 'Cart is empty' })
+        }
     } else {
-        res.status(404).json({ message: 'Cart is empty' })
+        req.session.returnTo = '/carts'
+        res.redirect('/session/login')
     }
 })
 

@@ -29,11 +29,12 @@ router.get('/', async (req, res) => {
             limit: parseInt(limit),
             page: parseInt(page)
         }
-        const products = await ProductsModel.paginate(
-            {}, options
-        )
+        const products = await ProductsModel.paginate({}, options)
 
-        res.render('products', { products: products.docs })
+        // paso todo para usar el paginate en handlebars
+        res.render('products', { products })
+        // paso .docs para ver solo los products de la vista
+        // res.render('products', { products: products.docs })
     } catch (error) {
         res.json({ status:'error', error })
     }
@@ -55,20 +56,20 @@ router.get('/list', async (req, res) => {
     // }
 })
 
-// router.get('/:id', (req, res) => {
-//     try {
-//         const productId = parseInt(req.params.id);
-//         const product = products.find(product => product.id === productId)
+router.get('/:id', async (req, res) => {
+    try {
+        const productId = req.params.id
+        const product = await Products.findById(productId)
 
-//         if (product) {
-//             res.json(product)
-//         } else {
-//             res.status(404).json({ error: 'Product not found' })
-//         }
-//     } catch (error) {
-//         res.status(404).json({ error: 'Product not found' })
-//     }
-// })
+        if (product) {
+            res.render('productDetail', { product })
+        } else {
+            res.status(404).json({ error: 'Product not found' })
+        }
+    } catch (error) {
+        res.status(404).json({ error: 'Product not found' })
+    }
+})
 
 router.get('/paginate', async (req, res) => {
     try {
