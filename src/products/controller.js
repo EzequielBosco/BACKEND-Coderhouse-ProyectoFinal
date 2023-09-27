@@ -71,19 +71,19 @@ router.get('/:id', async (req, res) => {
     }
 })
 
-router.get('/paginate', async (req, res) => {
-    try {
+// router.get('/paginate', async (req, res) => {
+//     try {
 
-        const { limit, page } = req.query
-        const payload = await ProductsModel.paginate(
-            {},
-            { limit: Number(limit), page: Number(page) }
-        )
-        res.json({ status: 'success', payload })
-    } catch (error) {
-        res.json({ status: 'error' })
-    }
-})
+//         const { limit, page } = req.query
+//         const payload = await ProductsModel.paginate(
+//             {},
+//             { limit: Number(limit), page: Number(page) }
+//         )
+//         res.json({ status: 'success', payload })
+//     } catch (error) {
+//         res.json({ status: 'error' })
+//     }
+// })
 
 router.post('/create', uploader.single('thumbnails'), async (req, res) => {
     try {    
