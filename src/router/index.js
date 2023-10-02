@@ -13,7 +13,10 @@ const router = app => {
     app.use('/messages', messagesController)
     app.use('/cookies', cookiesController)
     app.use('/session', sessionController)
-    app.use('/', home)
+    app.use('/', home),
+    app.use('*', (req, res) => {
+        res.render('notFound')
+    })
 }
 
 module.exports = router

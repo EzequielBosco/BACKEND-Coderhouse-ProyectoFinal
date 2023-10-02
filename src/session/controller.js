@@ -1,5 +1,6 @@
 const { Router } = require('express')
 const Users = require('../models/users.model')
+const { getHashedPassword, comparePassword } = require('../utils/bcrypts')
 
 const router = Router()
 
@@ -27,14 +28,14 @@ router.post('/register', async (req, res) => {
             last_name,
             email,
             age,
-            password
+            password: getHashedPassword(password)
         }
 
         const newUser = await Users.create(data)
 
         const redirectLogin = "/session/login"
 
-        return res.status(200).json({ message: 'Successful register', data: newUser, redirect: redirectLogin })
+        return res.status(201).json({ message: 'Successful register', data: newUser, redirect: redirectLogin })
     } catch (error) {
         res.status(500).json({ error: 'Register error' })
     }
@@ -62,10 +63,10 @@ router.post('/login', async (req, res) => {
         const user = await Users.findOne({ email })
 
         if (!user) {
-            return res.send('User not find')
+            return res.status(400).json({  status: 'error', error: 'user and password do not match' })
         }
         
-        if (user.password === password) {
+        if (comparePassword(password, user.password)) {
 
             req.session.user = user
             req.session.admin = true
@@ -82,7 +83,7 @@ router.post('/login', async (req, res) => {
                 return res.status(200).json({ message: 'Login successful', redirect: profileUrl })
             }
         } else {
-            return res.status(401).json({ error: 'Password does not match' })
+            return res.status(400).json({  status: 'error', error: 'User and password do not match' })
         }
     } catch (error) {
         res.status(500).json({ error: 'Login error' })
