@@ -6,6 +6,7 @@
         <p>{{this.description}}</p>
         <p>Precio: ${{this.price}}</p>
         <a class="button" href="/products/{{this.id}}">Ver más</a>
+        <button class="add-to-cart" data-id="{{this._id}}">Agregar al carrito</button>
     </div>
     {{/each}}
 </div>

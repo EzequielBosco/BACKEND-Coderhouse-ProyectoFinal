@@ -1,9 +1,10 @@
-const addProductCart = document.getElementById('add-to-cart')
+const addProductCart = document.querySelectorAll('.add-to-cart')
 
-addProductCart.addEventListener('click', (e) => {
-    const button = e.target
-    const productId = button.getAttribute('data-id')
-    addToCart(productId)
+addProductCart.forEach(button => {
+    button.addEventListener('click', (e) => {
+        const productId = e.target.getAttribute('data-id')
+        addToCart(productId)
+    })
 })
 
 async function addToCart(productId) {
