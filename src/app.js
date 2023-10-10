@@ -7,6 +7,8 @@ const session = require('express-session')
 const connectMongo = require('./db')
 const mongoStore = require('connect-mongo')
 const { db } = require("./config/index.config")
+const initializePassport = require('./config/passport.config')
+const passport = require('passport')
 
 const app = express()
 
@@ -26,6 +28,10 @@ app.use(session({
     resave:false, 
     saveUninitialized:false 
 }))
+
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')

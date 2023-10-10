@@ -1,13 +1,17 @@
 const { Router } = require('express')
 const Users = require('../models/users.model')
-const { getHashedPassword, comparePassword } = require('../utils/bcrypts')
+// const { getHashedPassword, comparePassword } = require('../utils/bcrypts')
+const passport = require('passport')
 
 const router = Router()
 
+const redirectLogin = "/session/login"
+const profileUrl = "/session/profile"
+
 router.get('/register', (req, res) => {
-    if (req.session.user && req.session.admin) {
-        const userId = req.session.user._id
-        const profileUrl = `/session/profile/${userId}`
+    if (req.session.user && req.session.user.role === 'user') {
+        // const userId = req.session.user._id
+        // const profileUrl = `/session/profile/${userId}`
 
         return res.redirect(profileUrl)
     }
@@ -15,36 +19,44 @@ router.get('/register', (req, res) => {
     res.render('register')
 })
 
-router.post('/register', async (req, res) => {
-    if (req.session.user && req.session.admin) {
+router.post('/register', passport.authenticate('register'), async (req, res) => {
+    if (req.session.user && req.session.user.role === 'user') {
         return res.send('You are already logged in')
     }
 
     try {
-        const { first_name, last_name, email, age, password } = req.body
+        // la logica la creo en config usando passport
+        // const { first_name, last_name, email, age, password } = req.body
+
+        // if(!first_name || !last_name || !email || !age || !password) return res.status(400).json({ status: 'error', error: 'Bad request' })
     
-        const data = {
-            first_name,
-            last_name,
-            email,
-            age,
-            password: getHashedPassword(password)
-        }
+        // const user = await Users.findOne({ email })
 
-        const newUser = await Users.create(data)
+        // if (user) {
+        //     return res.status(400).json({  status: 'error', error: 'User exists' })
+        // }
 
-        const redirectLogin = "/session/login"
+        // const data = {
+        //     first_name,
+        //     last_name,
+        //     email,
+        //     age,
+        //     password: getHashedPassword(password)
+        // }
 
-        return res.status(201).json({ message: 'Successful register', data: newUser, redirect: redirectLogin })
+        // const newUser = await Users.create(data)
+
+        return res.status(201).json({ message: 'Successful register', data: req.user, redirect: redirectLogin })
     } catch (error) {
         res.status(500).json({ error: 'Register error' })
     }
 })
 
 router.get('/login', (req, res) => {
-    if (req.session.user && req.session.admin) {
-        const userId = req.session.user._id
-        const profileUrl = `/session/profile/${userId}`
+
+    if (req.session.user && req.session.user.role === 'user') {
+        // const userId = req.session.user._id
+        // const profileUrl = `/session/profile/${userId}`
 
         return res.redirect(profileUrl)
     }
@@ -52,39 +64,54 @@ router.get('/login', (req, res) => {
     res.render('login')
 })
 
-router.post('/login', async (req, res) => {
-    if (req.session.user && req.session.admin) {
+router.post('/login', passport.authenticate('login'), async (req, res) => {
+    if (req.session.user && req.session.role === 'user') {
         return res.status(400).json({ error: 'You are already logged in' })
     }
 
     try {    
-        const { email, password } = req.body
+        if(!req.user) return res.status(400).json({ status: 'error', error: 'Invalid credentials'})
+
+        req.session.user = {
+            email: req.user.email,
+            role: 'user'
+        }
+
+        // const userId = req.user._id
+        // const profileUrl = `/session/profile/${userId}`
+
+        return res.status(200).json({ message: 'Login successful', redirect: profileUrl});
+
+        // logica en passport config
+        // const { email, password } = req.body
     
-        const user = await Users.findOne({ email })
+        // if(!email || !password) return res.status(400).json({ status: 'error', error: 'Bad request' })
 
-        if (!user) {
-            return res.status(400).json({  status: 'error', error: 'user and password do not match' })
-        }
+        // const user = await Users.findOne({ email })
+
+        // if (!user) {
+        //     return res.status(400).json({  status: 'error', error: 'user and password do not match' })
+        // }
         
-        if (comparePassword(password, user.password)) {
+        // if (comparePassword(password, user.password)) {
 
-            req.session.user = user
-            req.session.admin = true
+        //     req.session.user = user
+        //     req.session.admin = true
 
-            if (req.session.returnTo) {
-                // user a la URL 'returnTo'
-                const returnTo = req.session.returnTo
-                delete req.session.returnTo
-                return res.status(200).json({ message: 'Login successful', redirect: returnTo });
-            } else {
-                // user al perfil
-                const userId = req.session.user._id
-                const profileUrl = `/session/profile/${userId}`
-                return res.status(200).json({ message: 'Login successful', redirect: profileUrl })
-            }
-        } else {
-            return res.status(400).json({  status: 'error', error: 'User and password do not match' })
-        }
+        //     if (req.session.returnTo) {
+        //         // user a la URL 'returnTo'
+        //         const returnTo = req.session.returnTo
+        //         delete req.session.returnTo
+        //         return res.status(200).json({ message: 'Login successful', redirect: returnTo });
+        //     } else {
+        //         // user al perfil
+        //         const userId = req.session.user._id
+        //         const profileUrl = `/session/profile/${userId}`
+        //         return res.status(200).json({ message: 'Login successful', redirect: profileUrl })
+        //     }
+        // } else {
+        //     return res.status(400).json({  status: 'error', error: 'User and password do not match' })
+        // }
     } catch (error) {
         res.status(500).json({ error: 'Login error' })
     }
@@ -100,21 +127,9 @@ router.get('/', (req, res) => {
     }
 })
 
-function auth(req, res, next) {
-    try {
-        if (req.session.user && req.session.admin) {
-            return next()
-        } else {
-            return res.redirect('/session/login')
-        }
-    } catch (error) {
-        return res.status(401).send('Auth error')
-    }
-}
-
-router.get('/private', auth, (req, res) => {
-    res.send('You have admin acces')
-})
+// router.get('/private', auth, (req, res) => {
+//     res.send('You have admin acces')
+// })
 
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {
@@ -127,19 +142,41 @@ router.get('/logout', (req, res) => {
     })
 })
 
-router.get('/profile/:id', auth, async (req, res) => {
-    try {
-        const { id } = req.params
-        const user = await Users.findOne({ _id: id })
+// anterior profile sin session
+// router.get('/profile/:id', async (req, res) => {
+//     try {
+//         const { id } = req.params
+//         const user = await Users.findOne({ _id: id })
 
-        if (!user) {
-            return res.send('User profile not find')
-        }
+//         if (!user) {
+//             return res.send('User profile not find')
+//         }
 
-        res.render('profile', { user: user })
-    } catch (error) {
-        res.status(500).json({ error: 'User profile error' })
+//         res.render('profile', { user: user })
+//     } catch (error) {
+//         res.status(500).json({ error: 'User profile error' })
+//     }
+// })
+
+router.get('/profile', async (req, res) => {
+    const userInfo = {
+        email: req.session.user.email,
     }
+
+    const user = await Users.findOne({ email: userInfo.email })
+
+    if (!user) {
+        return res.send('User profile not find')
+    }
+
+    res.render('profile', { user: user })
+})
+
+router.get('/github', passport.authenticate('github', { scope: ['user: email'] }), (req, res) => {})
+
+router.get('/githubCallback', passport.authenticate('github', { failureRedirect: redirectLogin }), async (req, res) => {
+    req.session.user = req.user
+    res.redirect(profileUrl)
 })
 
 module.exports = router

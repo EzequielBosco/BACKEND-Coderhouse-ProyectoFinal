@@ -76,7 +76,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
 
     const carts = await Carts.find().lean()
-    if (req.session.user && req.session.admin) {
+    if (req.session.user && req.session.user.role === 'user') {
         if (carts) { 
             res.render('carts', { carts })
         } else {
