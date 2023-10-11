@@ -193,3 +193,25 @@ nav button {
     justify-content: center;
     align-items: end;
 }
+
+.main-products {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.div-order-products {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 140px;
+    gap: 20px;
+}
+
+.button {
+    padding: 5px 15px 5px 15px;
+}

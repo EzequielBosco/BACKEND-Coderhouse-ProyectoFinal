@@ -26,3 +26,23 @@ async function addToCart(productId) {
         console.error('Error:', error)
     }
 }
+
+const orderPriceAsc = document.getElementById('order-by-price-asc')
+orderPriceAsc.addEventListener('click', () => {
+    updateSortParam('asc')
+})
+
+const orderPriceDesc = document.getElementById('order-by-price-desc')
+orderPriceDesc.addEventListener('click', () => {
+    updateSortParam('desc')
+})
+
+function updateSortParam(sortValue) {
+    const currentURL = new URL(window.location.href)
+    
+    const searchParams = new URLSearchParams(currentURL.search)
+    searchParams.set('sort', sortValue)
+    
+    currentURL.search = searchParams.toString()
+    window.location.href = currentURL.toString()
+}

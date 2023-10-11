@@ -22,17 +22,20 @@ let idProduct = 0
 
 router.get('/', async (req, res) => {
     try {
-        const { limit = 10, page = 1 } = req.query
+        const { limit = 10, page = 1, order = 'price', sort = 'desc' } = req.query
 
         const options = {
             lean: true,
             limit: parseInt(limit),
-            page: parseInt(page)
+            page: parseInt(page),
         }
+
+        options.sort = sort === 'desc' ? '-' + order : order
+
         const products = await ProductsModel.paginate({}, options)
 
         // paso todo para usar el paginate en handlebars
-        res.render('products', { products })
+        res.render('products', { products, sort })
         // paso .docs para ver solo los products de la vista
         // res.render('products', { products: products.docs })
     } catch (error) {
