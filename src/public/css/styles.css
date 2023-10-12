@@ -3,6 +3,7 @@
     --color-back: rgb(235, 235, 235);
     --color-text: rgb(51, 51, 51);
     --color-detail: rgb(32, 103, 224);
+    --color-detail-1: rgb(52, 131, 250);
 }
 
 body {
@@ -15,6 +16,10 @@ body {
 
 button {
     cursor: pointer;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 14px 10px 14px;
+    font-size: 15px;
 }
 
 a {
@@ -22,7 +27,8 @@ a {
 }
 
 a:hover {
-    color: var(--color-text);
+    color: black;
+    transition: 0.2s ease-in-out;
 }
 
 a:active {
@@ -34,15 +40,18 @@ a:visited {
 }
 
 .forms {
-    background-color: rgb(66, 66, 66);
-    margin: 20px;
-    padding: 15px;
+    margin: 25px;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: start;
     gap: 5px;
-    max-width: 50%;
+    border: 0.5px solid var(--color-back);
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: white;
+    width: 75%;
 }
 
 .title {
@@ -60,18 +69,19 @@ a:visited {
 
 .forms input {
     margin-bottom: 10px;
-    padding: 5px;
+    padding: 8px 6px 8px 10px;
     border: 0.5px solid rgb(204, 204, 204);
-    border-radius: 10px;
+    border-radius: 6px;
+    line-height: 22px;
+    width: 95%;
+}
+
+.forms input:focus {
+    border-color: var(--color-detail) !important;
 }
 
 .chat {
     margin: 40px;
-}
-
-.products {
-    background-color: rgb(78, 78, 78);
-    color: white;
 }
 
 /* NAV */
@@ -194,6 +204,8 @@ nav button {
     align-items: end;
 }
 
+/* PRODUCTS */
+
 .main-products {
     width: 100%;
     display: flex;
@@ -212,6 +224,96 @@ nav button {
     gap: 20px;
 }
 
+.product-list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0 20px 0;
+}
+
+.product {
+    margin: 15px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 6px;
+    color: var(--color-text);
+}
+
 .button {
     padding: 5px 15px 5px 15px;
+}
+
+h1 {
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 500;
+}
+
+/* LOGIN */
+.login {
+    display: flex;
+    justify-content: center;
+    margin: 60px 0 60px 0;
+    padding: 0 200px 0 200px;
+    gap: 20px;
+}
+
+.div-form-left {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.div-form-right {
+    width: 45%;
+    display: flex;
+    justify-content: center;
+}
+
+.div-form-right div {
+    width: 100%;
+}
+
+.title-login {
+    white-space: pre-line;
+}
+
+.btn-cuenta {
+    color: var(--color-detail-1) !important;
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0;
+}
+
+hr {
+    width: 100%;
+    border-color: var(--color-grey); 
+}
+
+.grey {
+    border-color: white;
+}
+
+/* REGISTER */
+.register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 60px 0 60px 0;
+    padding: 0 200px 0 200px;
+    gap: 20px;
+}
+
+.div-button-register {
+    display: flex;
+    align-items: center;
+    gap: 25px;
 }

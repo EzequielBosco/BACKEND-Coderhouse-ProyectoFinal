@@ -66,7 +66,7 @@ const initializePassport = () => {
     passport.use('github', new githubStrategy({
         clientID: 'Iv1.ee370d4e4218bd65',
         clientSecret: '133bd0e796307eb7476ed7ad6375b65730cf07c0',
-        callbackURL: 'http://localhost:8080/session/githubCallback',
+        callbackURL: 'https://clon-mlibre.vercel.app/session/githubCallback',
     }, async (accessToken, refreshToken, profile, done) => {
         try {
             console.log(profile)

@@ -5,7 +5,7 @@
         <button class="button" id="order-by-price-asc" data-sort="asc" data-order="price">Menor precio</button>
         <button class="button" id="order-by-price-desc" data-sort="desc" data-order="price">Mayor precio</button>
     </div>
-    <div id="product-list">
+    <div id="product-list" class="product-list">
         {{#each products.docs}}
         <div class="product">
             <h2>{{this.title}}</h2>
