@@ -73,6 +73,7 @@ router.post('/login', passport.authenticate('login'), async (req, res) => {
         if(!req.user) return res.status(400).json({ status: 'error', error: 'Invalid credentials'})
 
         req.session.user = {
+            first_name: req.user.first_name,
             email: req.user.email,
             role: 'user'
         }
