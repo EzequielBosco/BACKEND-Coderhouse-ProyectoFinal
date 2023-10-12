@@ -23,6 +23,6 @@
   },
   "scripts": {
     "dev": "nodemon src/index.js",
-    "start": "node src/server.js"
+    "start": "node src/index.js"
   }
 }
